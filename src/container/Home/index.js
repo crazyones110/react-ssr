@@ -8,7 +8,9 @@ import { getHomeList } from './store/actions'
 
 const Home = props => {
   useEffect(() => {
-    props.getHomeList()
+    if (!this.props.list.length) {
+      props.getHomeList()
+    }
   }, [])
   return (
     <div>
@@ -27,8 +29,9 @@ const Home = props => {
   )
 }
 
-Home.loadData = () => {
+Home.loadData = (store) => {
   // 这个函数,负责在服务端渲染之前,把这个路由需要的数据提前加载好
+  return store.dispatch(getHomeList())
 }
 
 const mapStateToProps = state => ({
