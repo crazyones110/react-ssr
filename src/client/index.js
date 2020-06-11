@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import routes from '../Routes'
+import {renderRoutes} from 'react-router-config'
 import {getClientStore} from '../store'
 import {Provider} from 'react-redux'
 
@@ -13,9 +14,7 @@ const App = () => {
     <Provider store={store}>
       <BrowserRouter>
         <>
-        {routes.map(route => (
-          <Route {...route}/>
-        ))}
+          {renderRoutes(routes)}
         </>
       </BrowserRouter>
     </Provider>

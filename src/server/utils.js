@@ -2,6 +2,7 @@ import { renderToString } from 'react-dom/server'
 import { StaticRouter, Route } from 'react-router-dom'
 import React from 'react'
 import { Provider } from 'react-redux'
+import {renderRoutes} from 'react-router-config'
 
 export const render = (store, routes, req) => {
   // 服务器端React代码就不在浏览器上跑,怎么可能知道路由呢
@@ -10,9 +11,7 @@ export const render = (store, routes, req) => {
     <Provider store={store}>
       <StaticRouter context={{}} location={req.path}>
         <>
-          {routes.map(route => (
-            <Route {...route} />
-          ))}
+          {renderRoutes(routes)}
         </>
       </StaticRouter>
     </Provider>,

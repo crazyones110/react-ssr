@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import Header from '../components/Header'
 import { connect } from 'react-redux'
 import { getHomeList } from './store/actions'
 
@@ -14,7 +13,6 @@ const Home = props => {
   }, [])
   return (
     <div>
-      <Header />
       {props.list.map(item => {
         return <div key={item.id}>{item.title}</div>
       })}

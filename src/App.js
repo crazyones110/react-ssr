@@ -1,14 +1,16 @@
 import React from 'react'
-import Header from '../components/Header'
+import Header from './container/components/Header'
+import {renderRoutes} from 'react-router-config'
 
 // 同构: 一套React代码,在服务器端执行一次,在客户端再执行一次
 // 因为renderToString只能负责到页面的基础内容,事件相关的无能为力
 
-const Login = () => {
+const App = (props) => {
   return (
     <div>
-      <div>Login</div>
+      <Header/>
+      {renderRoutes(props.route.routes)}
     </div>
   )
 }
-export default Login
+export default App
