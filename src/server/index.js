@@ -22,7 +22,6 @@ app.use('/api', proxy('http://47.95.113.63', {
     // var queryString = parts[1];
     // var updatedPath = parts[0].replace(/test/, 'tent');
     // return updatedPath + (queryString ? '?' + queryString : '');
-    console.log(req.url)
     return '/ssr/api' + req.url
   }
 }))
@@ -30,19 +29,21 @@ app.use('/api', proxy('http://47.95.113.63', {
 app.get('*', (req, res) => {
   const store = getStore()
 
-  // const matchedRoutes = matchRoutes(routes, req.path)
+  const matchedRoutes = matchRoutes(routes, req.path)
 
-  // // 让matchRoutes里面所有的组件,对应的loadData执行一次
-  // const promises = []
+  // 让matchRoutes里面所有的组件,对应的loadData执行一次
+  const promises = []
 
-  // matchedRoutes.forEach((item) => {
-  //   if (item.route.loadData) {
-  //     promises.push(item.route.loadData(store))
-  //   }
-  // })
-  // Promise.all(promises).then(() => {
+  matchedRoutes.forEach((item) => {
+    if (item.route.loadData) {
+      promises.push(item.route.loadData(store))
+    }
+  })
+  Promise.all(promises).then(() => {
     res.send(render(store, routes, req))
-  // })
+  }).catch(()=> {
+    res.send('GG')
+  })
 })
 
 app.listen(3001, () => {
