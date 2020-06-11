@@ -8,7 +8,7 @@ import { getHomeList } from './store/actions'
 
 const Home = props => {
   useEffect(() => {
-    if (!this.props.list.length) {
+    if (!props.list.length) {
       props.getHomeList()
     }
   }, [])
