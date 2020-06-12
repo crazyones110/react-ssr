@@ -43,7 +43,9 @@ app.get('*', (req, res) => {
     const context = {}
     const html = render(store, routes, req, context)
     console.log(context)
-    if (context.notFound) {
+    if (context.action === 'REPLACE') {
+      res.redirect(context.url, 302)
+    } else if (context.notFound) {
       res.status(404)
       res.send(html)
     } else {
