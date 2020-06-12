@@ -10,7 +10,7 @@ const Header = props => {
       <br />
       {props.login ? (
         <>
-          <Link to="/logout">翻译列表</Link>
+          <Link to="/translation">翻译列表</Link>
           <br />
           <div onClick={props.handleLogout}>退出</div>
         </>

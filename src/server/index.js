@@ -39,6 +39,7 @@ app.get('*', (req, res) => {
       promises.push(item.route.loadData(store))
     }
   })
+  console.log(promises)
   Promise.all(promises).then(() => {
     res.send(render(store, routes, req))
   }).catch(()=> {

@@ -1,5 +1,5 @@
 import Home from './container/Home'
-import Login from './container/Login'
+import Translation from './container/Translation'
 import App from './App'
 
 export default [
@@ -16,10 +16,11 @@ export default [
         key: 'home',
       },
       {
-        path: '/login',
-        component: Login,
+        path: '/translation',
+        component: Translation,
         exact: true,
-        key: 'login',
+        loadData: Translation.loadData,
+        key: 'translation',
       },
     ]
   }
