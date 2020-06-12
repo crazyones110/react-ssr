@@ -1,9 +1,9 @@
 import express from 'express'
-import {renderToString} from 'react-dom/server'
+import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import React from 'react'
-import {render} from './utils'
-import {getStore} from '../store'
+import { render } from './utils'
+import { getStore } from '../store'
 import routes from '../Routes'
 import { matchRoutes } from 'react-router-config'
 import proxy from 'express-http-proxy'
@@ -16,15 +16,18 @@ const app = express()
 
 app.use(express.static('public'))
 
-app.use('/api', proxy('http://47.95.113.63', {
-  proxyReqPathResolver(req) {
-    // var parts = req.url.split('?');
-    // var queryString = parts[1];
-    // var updatedPath = parts[0].replace(/test/, 'tent');
-    // return updatedPath + (queryString ? '?' + queryString : '');
-    return '/ssr/api' + req.url
-  }
-}))
+app.use(
+  '/api',
+  proxy('http://47.95.113.63', {
+    proxyReqPathResolver(req) {
+      // var parts = req.url.split('?');
+      // var queryString = parts[1];
+      // var updatedPath = parts[0].replace(/test/, 'tent');
+      // return updatedPath + (queryString ? '?' + queryString : '');
+      return '/ssr/api' + req.url
+    },
+  }),
+)
 
 app.get('*', (req, res) => {
   const store = getStore(req)
@@ -34,26 +37,28 @@ app.get('*', (req, res) => {
   // 让matchRoutes里面所有的组件,对应的loadData执行一次
   const promises = []
 
-  matchedRoutes.forEach((item) => {
+  matchedRoutes.forEach(item => {
     if (item.route.loadData) {
-      promises.push(item.route.loadData(store))
+      promises.push(item.route.loadData(store).catch(()=>'error'))
     }
   })
-  Promise.all(promises).then(() => {
-    const context = {}
-    const html = render(store, routes, req, context)
-    console.log(context)
-    if (context.action === 'REPLACE') {
-      res.redirect(context.url, 302)
-    } else if (context.notFound) {
-      res.status(404)
-      res.send(html)
-    } else {
-      res.send(html)
-    }
-  }).catch(()=> {
-    res.send('GG')
-  })
+
+  // 一个页面要加载ABCD 四个组件
+
+  Promise.all(promises)
+    .then(() => {
+      const context = {}
+      const html = render(store, routes, req, context)
+      console.log(context)
+      if (context.action === 'REPLACE') {
+        res.redirect(context.url, 302)
+      } else if (context.notFound) {
+        res.status(404)
+        res.send(html)
+      } else {
+        res.send(html)
+      }
+    })
 })
 
 app.listen(3001, () => {
