@@ -4,12 +4,12 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import {renderRoutes} from 'react-router-config'
 
-export const render = (store, routes, req) => {
+export const render = (store, routes, req, context) => {
   // 服务器端React代码就不在浏览器上跑,怎么可能知道路由呢
   // 所以需要在location中传进去
   const content = renderToString(
     <Provider store={store}>
-      <StaticRouter context={{}} location={req.path}>
+      <StaticRouter context={context} location={req.path}>
         <>
           {renderRoutes(routes)}
         </>

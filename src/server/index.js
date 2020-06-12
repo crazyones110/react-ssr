@@ -39,9 +39,16 @@ app.get('*', (req, res) => {
       promises.push(item.route.loadData(store))
     }
   })
-  console.log(promises)
   Promise.all(promises).then(() => {
-    res.send(render(store, routes, req))
+    const context = {}
+    const html = render(store, routes, req, context)
+    console.log(context)
+    if (context.notFound) {
+      res.status(404)
+      res.send(html)
+    } else {
+      res.send(html)
+    }
   }).catch(()=> {
     res.send('GG')
   })

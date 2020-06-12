@@ -1,6 +1,7 @@
 import Home from './container/Home'
 import Translation from './container/Translation'
 import App from './App'
+import NotFound from './container/NotFound'
 
 export default [
   {
@@ -22,6 +23,9 @@ export default [
         loadData: Translation.loadData,
         key: 'translation',
       },
+      {
+        component: NotFound
+      }
     ]
   }
 ]
